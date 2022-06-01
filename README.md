@@ -1,7 +1,7 @@
 # utils-go
 Common utilitiy code
 
-## Common Json utilities:
+### Json utilities:
 [/json_handling/json_handler.go](https://github.com/azam-akram/utils-go/blob/main/json_handling/json_handler.go)
 ```
 type JsonHandler_Interface interface {
@@ -18,3 +18,5 @@ type JsonHandler_Interface interface {
 }
 ```
 
+### HTTP utilities:
+Simple HTTP client-server communication but with retry mechanism. HTTP server deliberately returns HTTP 500 (internal server error) for first 3 HTTP request, to "pretend" server is facing some internal errors. The HTTP client continues to retry HTTP request (with 5 maximum number of retries attempt) until it gets 200 OK response.

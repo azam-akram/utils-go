@@ -1,7 +1,7 @@
 package main
 
 import (
-	jsonHandling "azam-akram/go/utils/json_handling"
+	jsonHandling "azam-akram/go/utils/json_utils"
 	"fmt"
 )
 
