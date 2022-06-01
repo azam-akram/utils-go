@@ -1,4 +1,4 @@
-package jsonhandling
+package json_utils
 
 type Employee struct {
 	ID          string    `json:"id,omitempty"`

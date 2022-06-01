@@ -1,4 +1,4 @@
-package jsonhandling
+package json_utils
 
 import (
 	"encoding/json"
