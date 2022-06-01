@@ -17,5 +17,5 @@ type JsonHandler_Interface interface {
 }
 ```
 
-### [HTTP utilities]((https://github.com/azam-akram/utils-go/tree/main/http_utils)):
+### [HTTP utilities](https://github.com/azam-akram/utils-go/tree/main/http_utils):
 A simple HTTP client-server communication but with retry in place. HTTP [server](https://github.com/azam-akram/utils-go/tree/main/http_utils/server) deliberately returns HTTP 500 (internal server error) for first 3 HTTP request, to "mock" some internal server errors. The HTTP [client](https://github.com/azam-akram/utils-go/tree/main/http_utils/client) continues to retry HTTP request (with 5 maximum number of retries attempt) until it gets 200 OK response.
