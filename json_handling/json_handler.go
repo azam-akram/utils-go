@@ -206,7 +206,7 @@ func (jHandler JsonHandler) ConvertGenericInterfaceToMap() {
 	}
 }
 
-func DemoReverseSlice() {
+func reverseSlice() {
 	nums := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	Print(nums)
 	for i, j := 0, len(nums)-1; i < j; i, j = i+1, j-1 {
