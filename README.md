@@ -1,5 +1,5 @@
 # utils-go
-Common utilitiy code
+Common go lang utilitiy code
 
 ### [Json utils](https://github.com/azam-akram/utils-go/tree/main/json_utils):
 ```
