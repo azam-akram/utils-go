@@ -1,9 +1,10 @@
 # utils-go
-Common utilitiy code
+Common go lang utilitiy code
 
 ### [Json utils](https://github.com/azam-akram/utils-go/tree/main/json_utils):
 ```
 type JsonHandler_Interface interface {
+	DisplayAllJsonHandlers()
 	ConvertStringToMap(s string) (map[string]interface{}, error)
 	ConvertMapToString(m map[string]interface{}) (string, error)
 	ConvertStringToStruct(s string) (*Employee, error)
@@ -13,19 +14,13 @@ type JsonHandler_Interface interface {
 	ConvertByteToStruct(jsonBytes []byte) (*Employee, error)
 	ConvertStructToByte(emp *Employee) (jsonBytes []byte, err error)
 	ConvertGenericInterfaceToMap()
-	DisplayAllJsonHandlers()
 }
 ```
-How to use
+#### How to use:
+Look at `DisplayAllJsonHandlers()` to know how to use other functions exposed by `JsonHandler_Interface` interface. If you want to call all of these functions, simply call `DisplayAllJsonHandlers()`
 ```
-package main
-import (
-	jsonHandling "azam-akram/go/utils/json_utils"
-)
-func main() {
-	jsonHandler := jsonHandling.JsonHandler{}
-	jsonHandler.DisplayAllJsonHandlers()
-}
+jsonHandler := json_utils.JsonHandler{}
+jsonHandler.DisplayAllJsonHandlers()
 ```
 
 ### [HTTP utils](https://github.com/azam-akram/utils-go/tree/main/http_utils):
