@@ -16,7 +16,7 @@ type JsonHandler_Interface interface {
 	ConvertGenericInterfaceToMap()
 }
 ```
-How to use
+#### How to use:
 Look at `DisplayAllJsonHandlers()` to know how to use other functions exposed by `JsonHandler_Interface` interface. If you want to call all of these functions, simply call `DisplayAllJsonHandlers()`
 ```
 jsonHandler := json_utils.JsonHandler{}
