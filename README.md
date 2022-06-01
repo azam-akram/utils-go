@@ -2,7 +2,7 @@
 Common utilitiy code
 
 ### Json utilities:
-[/json_handling/json_handler.go](https://github.com/azam-akram/utils-go/blob/main/json_handling/json_handler.go)
+[/json_utils/json_handler.go](https://github.com/azam-akram/utils-go/tree/main/json_utils)
 ```
 type JsonHandler_Interface interface {
 	ConvertStringToMap(s string) (map[string]interface{}, error)
@@ -19,4 +19,5 @@ type JsonHandler_Interface interface {
 ```
 
 ### HTTP utilities:
-Simple HTTP client-server communication but with retry mechanism. HTTP server deliberately returns HTTP 500 (internal server error) for first 3 HTTP request, to "pretend" server is facing some internal errors. The HTTP client continues to retry HTTP request (with 5 maximum number of retries attempt) until it gets 200 OK response.
+[/http_utils/json_handler.go](https://github.com/azam-akram/utils-go/tree/main/http_utils)
+A simple HTTP client-server communication but with retry in place. HTTP [server](https://github.com/azam-akram/utils-go/tree/main/http_utils/server) deliberately returns HTTP 500 (internal server error) for first 3 HTTP request, to "mock" some internal server errors. The HTTP [client](https://github.com/azam-akram/utils-go/tree/main/http_utils/client) continues to retry HTTP request (with 5 maximum number of retries attempt) until it gets 200 OK response.
