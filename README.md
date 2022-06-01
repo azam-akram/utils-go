@@ -1,8 +1,8 @@
 # utils-go
 Common utilitiy code
 
-## Common Json Handling:
-/json_handling/json_handler.go
+## Common Json utilities:
+[/json_handling/json_handler.go](https://github.com/azam-akram/utils-go/blob/main/json_handling/json_handler.go)
 ```
 type JsonHandler_Interface interface {
 	ConvertStringToMap(s string) (map[string]interface{}, error)
