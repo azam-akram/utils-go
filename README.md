@@ -16,6 +16,17 @@ type JsonHandler_Interface interface {
 	DisplayAllJsonHandlers()
 }
 ```
+How to use
+```
+package main
+import (
+	jsonHandling "azam-akram/go/utils/json_utils"
+)
+func main() {
+	jsonHandler := jsonHandling.JsonHandler{}
+	jsonHandler.DisplayAllJsonHandlers()
+}
+```
 
 ### [HTTP utils](https://github.com/azam-akram/utils-go/tree/main/http_utils):
 A simple HTTP client-server communication but with retry in place. 
