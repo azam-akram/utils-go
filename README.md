@@ -1,6 +1,15 @@
 # utils-go
 Common go lang utilitiy code
 
+Vet whole project by,
+```
+go vet ./...
+```
+run all tests in [json_handler_test.go](https://github.com/azam-akram/utils-go/blob/main/json_utils/json_handler_test.go) by, 
+```
+go test ./...
+```
+
 ### [Json utils](https://github.com/azam-akram/utils-go/tree/main/json_utils):
 ```
 type JsonHandler_Interface interface {
@@ -22,14 +31,6 @@ Have a look at `DisplayAllJsonHandlers()` to know how to use other functions exp
 ```
 jsonHandler := json_utils.JsonHandler{}
 jsonHandler.DisplayAllJsonHandlers()
-```
-Vet whole project by,
-```
-go vet ./...
-```
-else you can also run all tests in [json_handler_test.go](https://github.com/azam-akram/utils-go/blob/main/json_utils/json_handler_test.go) by, 
-```
-go test ./...
 ```
 
 ### [HTTP utils](https://github.com/azam-akram/utils-go/tree/main/http_utils):
