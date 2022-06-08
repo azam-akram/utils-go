@@ -18,10 +18,18 @@ type JsonHandler_Interface interface {
 }
 ```
 #### How to use:
-Look at `DisplayAllJsonHandlers()` to know how to use other functions exposed by `JsonHandler_Interface` interface. If you want to call all of these functions, simply call `DisplayAllJsonHandlers()`
+Have a look at `DisplayAllJsonHandlers()` to know how to use other functions exposed by `JsonHandler_Interface` interface. If you want to call all of these functions, simply call `DisplayAllJsonHandlers()`
 ```
 jsonHandler := json_utils.JsonHandler{}
 jsonHandler.DisplayAllJsonHandlers()
+```
+Vet whole project by
+```
+go vet ./...
+```
+else you can also run all tests in [json_handler_test.go](https://github.com/azam-akram/utils-go/blob/main/json_utils/json_handler_test.go) by `go test` command 
+```
+go test ./...
 ```
 
 ### [HTTP utils](https://github.com/azam-akram/utils-go/tree/main/http_utils):

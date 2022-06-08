@@ -1,7 +1,7 @@
 package json_utils
 
 import (
-	"azam-akram/go/utils/json_utils/logger"
+	"azam-akram/go/utils/logger"
 	"encoding/json"
 	"errors"
 	"fmt"

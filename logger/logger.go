@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"encoding/json"
 	"sync"
 
 	"go.uber.org/zap"
@@ -33,7 +32,6 @@ func GetLogger() Logger {
 
 type Logger interface {
 	Print(args ...interface{})
-	PrintMap(msg string, args ...interface{})
 	PrintKeyValue(msg string, keysAndValues ...interface{})
 }
 
@@ -41,21 +39,6 @@ func (l *adaptedLogger) Print(args ...interface{}) {
 	log.Sugar().Info(args...)
 }
 
-func (l *adaptedLogger) PrintMap(template string, args ...interface{}) {
-	log.Sugar().Infof(template, pretty(args)...)
-}
-
 func (l *adaptedLogger) PrintKeyValue(msg string, keysAndValues ...interface{}) {
 	log.Sugar().Infow(msg, keysAndValues...)
-}
-
-func pretty(args []interface{}) []interface{} {
-	pretties := make([]interface{}, 0, len(args))
-
-	for _, param := range args {
-		arg, _ := json.Marshal(param)
-		pretties = append(pretties, arg)
-	}
-
-	return pretties
 }
