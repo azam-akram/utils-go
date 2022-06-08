@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"azam-akram/go/utils/logger"
 	"net/http"
 	"time"
 
@@ -27,8 +27,8 @@ func main() {
 
 	resp, err := client.R().Get("http://localhost:8989/")
 
-	fmt.Printf("\nError: %v", err)
-	fmt.Printf("\nResponse Status Code: %v", resp.StatusCode())
-	fmt.Printf("\nResponse Status: %v", resp.Status())
-	fmt.Printf("\nResponse Body: %v", resp)
+	logger.GetLogger().PrintKeyValue("Client:main", "Error", err)
+	logger.GetLogger().PrintKeyValue("Client:main", "StatusCode", resp.StatusCode())
+	logger.GetLogger().PrintKeyValue("Client:main", "Status", resp.Status())
+	logger.GetLogger().PrintKeyValue("Client:main", "resp", resp)
 }
