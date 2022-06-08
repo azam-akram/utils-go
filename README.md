@@ -13,7 +13,7 @@ go test ./...
 ### [Json utils](https://github.com/azam-akram/utils-go/tree/main/json_utils):
 ```
 type JsonHandler_Interface interface {
-	ConvertGenericInterfaceToMap()
+	[ConvertGenericInterfaceToMap()](https://github.com/azam-akram/utils-go/blob/85de9b1f6804834765c9b0320d00ad944cac7b75/json_utils/json_handler.go#L54)
 	ConvertStringToMap(s string) (map[string]interface{}, error)
 	ConvertMapToString(m map[string]interface{}) (string, error)
 	ConvertStringToStruct(s string) (*Employee, error)
