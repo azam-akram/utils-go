@@ -11,9 +11,9 @@ go test ./...
 ```
 
 ### [Json utils](https://github.com/azam-akram/utils-go/tree/main/json_utils):
-
+```
 type JsonHandler_Interface interface {
-	[ConvertGenericInterfaceToMap()](https://github.com/azam-akram/utils-go/blob/85de9b1f6804834765c9b0320d00ad944cac7b75/json_utils/json_handler.go#L54)
+	ConvertGenericInterfaceToMap()
 	ConvertStringToMap(s string) (map[string]interface{}, error)
 	ConvertMapToString(m map[string]interface{}) (string, error)
 	ConvertStringToStruct(s string) (*Employee, error)
@@ -25,7 +25,7 @@ type JsonHandler_Interface interface {
 	ModifyInputJson(s string) (map[string]interface{}, error)
 	DisplayAllJsonHandlers()
 }
-
+```
 #### How to use:
 Have a look at `DisplayAllJsonHandlers()` to know how to use other functions exposed by `JsonHandler_Interface` interface. If you want to call all of these functions, simply call `DisplayAllJsonHandlers()`
 ```
