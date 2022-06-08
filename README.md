@@ -37,5 +37,5 @@ const (
 )
 ```
 
-### [Customised Logger](https://github.com/azam-akram/utils-go/tree/main/logger):
+### [Customised Logger](https://github.com/azam-akram/utils-go/blob/main/logger/logger.go):
 A customised logger, which can log different data structures like, string, key-value map etc.
