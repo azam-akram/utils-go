@@ -127,3 +127,14 @@ func Test_ConvertStructToByte_Success(t *testing.T) {
 
 	assert.NotNil(t, jsonBytes)
 }
+
+func Test_ModifyInputJson_Success(t *testing.T) {
+	assertThat := assert.New(t)
+	jh := JsonHandler{}
+
+	modifiedEmpMap, _ := jh.ModifyInputJson(empStr)
+
+	assert.NotNil(t, modifiedEmpMap)
+	assertThat.Equal(modifiedEmpMap["degree"], "phd")
+	assertThat.Equal(modifiedEmpMap["name"], "The User")
+}

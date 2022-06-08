@@ -1,10 +1,15 @@
 package json_utils
 
 import (
+	"azam-akram/go/utils/json_utils/logger"
 	"encoding/json"
 	"errors"
 	"fmt"
+
+	"go.uber.org/zap"
 )
+
+var log *zap.Logger
 
 var jHandler JsonHandler_Interface
 
@@ -22,10 +27,6 @@ type JsonHandler_Interface interface {
 }
 
 type JsonHandler struct {
-}
-
-func Print(v interface{}) {
-	fmt.Println(v)
 }
 
 var employeeStr = string(`{
@@ -50,14 +51,20 @@ var employeeStr = string(`{
 }`)
 
 func (jHandler JsonHandler) DisplayAllJsonHandlers() {
-	Print("***** ConvertStringToMap *****")
+
+	modifiedEmpMap, err := jHandler.ModifyInputJson(employeeStr)
+	if err != nil {
+		logger.GetLogger().Print(err)
+	}
+
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ModifyInputJson", "modifiedEmpMap", modifiedEmpMap)
+
 	jMap, err := jHandler.ConvertStringToMap(employeeStr)
 	if err != nil {
-		Print(err)
+		logger.GetLogger().Print(err)
 	}
-	Print(jMap)
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStringToMap", "jMap", jMap)
 
-	Print("***** ConvertMapToString *****")
 	mapData := map[string]interface{}{
 		"id":   "The ID",
 		"user": "The User",
@@ -65,57 +72,47 @@ func (jHandler JsonHandler) DisplayAllJsonHandlers() {
 
 	str, err := jHandler.ConvertMapToString(mapData)
 	if err != nil {
-		Print(err)
+		logger.GetLogger().Print(err)
 	}
-	Print(str)
 
-	Print("***** ConvertStringToStruct *****")
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertMapToString", "str", str)
+
 	emp, err := jHandler.ConvertStringToStruct(employeeStr)
 	if err != nil {
-		Print(err)
+		logger.GetLogger().Print(err)
 	}
-	Print(emp)
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStringToStruct", "emp", emp)
 
-	Print("***** ConvertStructToString *****")
 	str, err = jHandler.ConvertStructToString(emp)
 	if err != nil {
-		Print(err)
+		logger.GetLogger().Print(err)
 	}
-	Print(str)
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStructToString", "str", str)
 
-	Print("***** ConvertStringToByte *****")
 	jsonBytes := jHandler.ConvertStringToByte(employeeStr)
-	Print(jsonBytes)
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStringToByte", "jsonBytes", jsonBytes)
 
-	Print("***** ConvertByteToString *****")
 	bytesStr := jHandler.ConvertByteToString(jsonBytes)
-	Print(bytesStr)
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertByteToString", "bytesStr", bytesStr)
 
-	Print("***** ConvertByteToStruct *****")
 	emp, err = jHandler.ConvertByteToStruct(jsonBytes)
 	if err != nil {
-		Print(err)
+		logger.GetLogger().Print(err)
 	}
-	Print(emp)
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertByteToStruct", "emp", emp)
 
-	Print("***** ConvertStructToByte *****")
 	jsonBytes, err = jHandler.ConvertStructToByte(emp)
 	if err != nil {
-		Print(err)
+		logger.GetLogger().Print(err)
 	}
-	Print(jsonBytes)
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStructToByte", "jsonBytes", jsonBytes)
 
-	Print("***** ConvertGenericInterfaceToMap *****")
 	jHandler.ConvertGenericInterfaceToMap()
-
-	Print("***** printMap *****")
-	printMap()
 }
 
 func (jHandler JsonHandler) ConvertStringToMap(s string) (map[string]interface{}, error) {
 	var emp = make(map[string]interface{})
-	err := json.Unmarshal([]byte(s), &emp)
-	if err != nil {
+	if err := json.Unmarshal([]byte(s), &emp); err != nil {
 		return nil, errors.New("cannot convert string to map")
 	}
 
@@ -206,6 +203,19 @@ func (jHandler JsonHandler) ConvertGenericInterfaceToMap() {
 	}
 }
 
+func (jHandler JsonHandler) ModifyInputJson(s string) (map[string]interface{}, error) {
+	var inputEmpMap = make(map[string]interface{})
+	if err := json.Unmarshal([]byte(s), &inputEmpMap); err != nil {
+		return nil, errors.New("cannot convert string to map")
+	}
+
+	logger.GetLogger().PrintKeyValue("ModifyInputJson", "inputEmpMap", inputEmpMap)
+
+	inputEmpMap["degree"] = "phd"
+	return inputEmpMap, nil
+}
+
+/*
 func reverseSlice() {
 	nums := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	Print(nums)
@@ -222,4 +232,4 @@ func printMap() {
 	myMap["k3"] = 3
 	Print(myMap)
 	Print(myMap["k3"])
-}
+}*/
