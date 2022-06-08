@@ -14,6 +14,7 @@ var log *zap.Logger
 var jHandler JsonHandler_Interface
 
 type JsonHandler_Interface interface {
+	ConvertGenericInterfaceToMap()
 	ConvertStringToMap(s string) (map[string]interface{}, error)
 	ConvertMapToString(m map[string]interface{}) (string, error)
 	ConvertStringToStruct(s string) (*Employee, error)
@@ -22,7 +23,7 @@ type JsonHandler_Interface interface {
 	ConvertByteToString([]byte) (string, error)
 	ConvertByteToStruct(jsonBytes []byte) (*Employee, error)
 	ConvertStructToByte(emp *Employee) (jsonBytes []byte, err error)
-	ConvertGenericInterfaceToMap()
+	ModifyInputJson(s string) (map[string]interface{}, error)
 	DisplayAllJsonHandlers()
 }
 
@@ -51,6 +52,7 @@ var employeeStr = string(`{
 }`)
 
 func (jHandler JsonHandler) DisplayAllJsonHandlers() {
+	jHandler.ConvertGenericInterfaceToMap()
 
 	modifiedEmpMap, err := jHandler.ModifyInputJson(employeeStr)
 	if err != nil {
@@ -107,7 +109,32 @@ func (jHandler JsonHandler) DisplayAllJsonHandlers() {
 	}
 	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStructToByte", "jsonBytes", jsonBytes)
 
-	jHandler.ConvertGenericInterfaceToMap()
+}
+
+func (jHandler JsonHandler) ConvertGenericInterfaceToMap() {
+	b := []byte(`{"k1":"v1","k2":6,"k3":["v3","v4"]}`)
+	//fmt.Println(b)
+	var i interface{}
+	_ = json.Unmarshal(b, &i)
+	fmt.Println(i)
+
+	d := i.(map[string]interface{})
+
+	for k, v := range d {
+		switch vv := v.(type) {
+		case string:
+			fmt.Printf("key = %s, value = %s, value type = string\n", k, vv)
+		case float64:
+			fmt.Printf("key = %s, value = %f, value type = float64\n", k, vv)
+		case []interface{}:
+			fmt.Println(k, "'s value is a array:")
+			for i, u := range vv {
+				fmt.Println(i, u)
+			}
+		default:
+			fmt.Println(k, "unknown type")
+		}
+	}
 }
 
 func (jHandler JsonHandler) ConvertStringToMap(s string) (map[string]interface{}, error) {
@@ -177,32 +204,6 @@ func (jHandler JsonHandler) ConvertStructToByte(emp *Employee) (jsonBytes []byte
 	return jsonBytes, nil
 }
 
-func (jHandler JsonHandler) ConvertGenericInterfaceToMap() {
-	b := []byte(`{"k1":"v1","k2":6,"k3":["v3","v4"]}`)
-	//fmt.Println(b)
-	var i interface{}
-	_ = json.Unmarshal(b, &i)
-	fmt.Println(i)
-
-	d := i.(map[string]interface{})
-
-	for k, v := range d {
-		switch vv := v.(type) {
-		case string:
-			fmt.Printf("key = %s, value = %s, value type = string\n", k, vv)
-		case float64:
-			fmt.Printf("key = %s, value = %f, value type = float64\n", k, vv)
-		case []interface{}:
-			fmt.Println(k, "'s value is a array:")
-			for i, u := range vv {
-				fmt.Println(i, u)
-			}
-		default:
-			fmt.Println(k, "unknown type")
-		}
-	}
-}
-
 func (jHandler JsonHandler) ModifyInputJson(s string) (map[string]interface{}, error) {
 	var inputEmpMap = make(map[string]interface{})
 	if err := json.Unmarshal([]byte(s), &inputEmpMap); err != nil {
@@ -214,22 +215,3 @@ func (jHandler JsonHandler) ModifyInputJson(s string) (map[string]interface{}, e
 	inputEmpMap["degree"] = "phd"
 	return inputEmpMap, nil
 }
-
-/*
-func reverseSlice() {
-	nums := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-	Print(nums)
-	for i, j := 0, len(nums)-1; i < j; i, j = i+1, j-1 {
-		nums[i], nums[j] = nums[j], nums[i]
-	}
-	Print(nums)
-}
-
-func printMap() {
-	myMap := make(map[string]int)
-	myMap["k1"] = 1
-	myMap["k2"] = 2
-	myMap["k3"] = 3
-	Print(myMap)
-	Print(myMap["k3"])
-}*/

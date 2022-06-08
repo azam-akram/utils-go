@@ -4,7 +4,7 @@ Common go lang utilitiy code
 ### [Json utils](https://github.com/azam-akram/utils-go/tree/main/json_utils):
 ```
 type JsonHandler_Interface interface {
-	DisplayAllJsonHandlers()
+	ConvertGenericInterfaceToMap()
 	ConvertStringToMap(s string) (map[string]interface{}, error)
 	ConvertMapToString(m map[string]interface{}) (string, error)
 	ConvertStringToStruct(s string) (*Employee, error)
@@ -13,7 +13,8 @@ type JsonHandler_Interface interface {
 	ConvertByteToString([]byte) (string, error)
 	ConvertByteToStruct(jsonBytes []byte) (*Employee, error)
 	ConvertStructToByte(emp *Employee) (jsonBytes []byte, err error)
-	ConvertGenericInterfaceToMap()
+	ModifyInputJson(s string) (map[string]interface{}, error)
+	DisplayAllJsonHandlers()
 }
 ```
 #### How to use:
@@ -35,3 +36,6 @@ const (
 	retryMaxWaitTimeSeconds = 15
 )
 ```
+
+### [Customised Logger](https://github.com/azam-akram/utils-go/tree/main/logger):
+A customised logger, which can log different data structures like, string, key-value map etc.
