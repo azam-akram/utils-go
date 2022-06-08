@@ -27,7 +27,7 @@ type JsonHandler_Interface interface {
 }
 ```
 #### How to use:
-Have a look at `DisplayAllJsonHandlers()` to know how to use other functions exposed by `JsonHandler_Interface` interface. If you want to call all of these functions, simply call `DisplayAllJsonHandlers()`
+Have a look at [DisplayAllJsonHandlers()](https://github.com/azam-akram/utils-go/blob/85de9b1f6804834765c9b0320d00ad944cac7b75/json_utils/json_handler.go#L54) to know how to use other functions exposed by `JsonHandler_Interface` interface. If you want to call all of these functions, simply call `DisplayAllJsonHandlers()`
 ```
 jsonHandler := json_utils.JsonHandler{}
 jsonHandler.DisplayAllJsonHandlers()
