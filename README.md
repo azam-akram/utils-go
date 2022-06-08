@@ -23,11 +23,11 @@ Have a look at `DisplayAllJsonHandlers()` to know how to use other functions exp
 jsonHandler := json_utils.JsonHandler{}
 jsonHandler.DisplayAllJsonHandlers()
 ```
-Vet whole project by
+Vet whole project by,
 ```
 go vet ./...
 ```
-else you can also run all tests in [json_handler_test.go](https://github.com/azam-akram/utils-go/blob/main/json_utils/json_handler_test.go) by `go test` command 
+else you can also run all tests in [json_handler_test.go](https://github.com/azam-akram/utils-go/blob/main/json_utils/json_handler_test.go) by, 
 ```
 go test ./...
 ```
