@@ -1,7 +1,7 @@
 package main
 
 import (
-	"azam-akram/go/utils/logger"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -9,15 +9,15 @@ import (
 )
 
 const (
-	retryCount              = 5
-	retryMinWaitTimeSeconds = 5
-	retryMaxWaitTimeSeconds = 15
+	RETRY_COUNT                 = 3
+	RETRY_MIN_WAIT_TIME_SECONDS = 5
+	RETRY_MAX_WAIT_TIME_SECONDS = 15
 )
 
 func main() {
-	client := resty.New().SetRetryCount(retryCount).
-		SetRetryWaitTime(retryMinWaitTimeSeconds * time.Second).
-		SetRetryMaxWaitTime(retryMaxWaitTimeSeconds * time.Second).
+	client := resty.New().SetRetryCount(RETRY_COUNT).
+		SetRetryWaitTime(RETRY_MIN_WAIT_TIME_SECONDS * time.Second).
+		SetRetryMaxWaitTime(RETRY_MAX_WAIT_TIME_SECONDS * time.Second).
 		AddRetryCondition(
 			func(r *resty.Response, err error) bool {
 				return r.StatusCode() == http.StatusRequestTimeout ||
@@ -26,9 +26,10 @@ func main() {
 		)
 
 	resp, err := client.R().Get("http://localhost:8989/")
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	logger.GetLogger().PrintKeyValue("Client:main", "Error", err)
-	logger.GetLogger().PrintKeyValue("Client:main", "StatusCode", resp.StatusCode())
-	logger.GetLogger().PrintKeyValue("Client:main", "Status", resp.Status())
-	logger.GetLogger().PrintKeyValue("Client:main", "resp", resp)
+	fmt.Println("Status: ", resp.Status())
+	fmt.Println("Response: ", resp)
 }
