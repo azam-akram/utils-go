@@ -11,6 +11,9 @@ go test ./...
 ```
 
 ### [Json utils](https://github.com/azam-akram/utils-go/tree/main/json_utils):
+
+Details about HTTP json-utils can be found [here] (https://medium.com/@akram.muhammadazam/the-most-common-json-utility-functions-in-go-language-f6dcc4284292)
+
 ```
 type JsonHandler_Interface interface {
 	ConvertGenericInterfaceToMap()
@@ -34,6 +37,9 @@ jsonHandler.DisplayAllJsonHandlers()
 ```
 
 ### [HTTP utils](https://github.com/azam-akram/utils-go/tree/main/http_utils):
+
+Details about HTTP client-server can be found [here] (https://medium.com/@akram.muhammadazam/go-a-retryable-http-client-server-fbcb04dc33e9)
+
 A simple HTTP client-server communication but with retry in place. 
 [HTTP Server](https://github.com/azam-akram/utils-go/tree/main/http_utils/server) deliberately returns HTTP 500 (internal server error) for first 3 HTTP request, to "mock" some internal server errors. 
 [HTTP Client](https://github.com/azam-akram/utils-go/tree/main/http_utils/client) continues to retry HTTP request (with 5 maximum number of retries attempt) until it gets 200 OK response.
