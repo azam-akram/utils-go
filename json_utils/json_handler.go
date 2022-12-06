@@ -1,114 +1,33 @@
 package json_utils
 
 import (
-	"azam-akram/go/utils/logger"
 	"encoding/json"
 	"errors"
 	"fmt"
 
-	"go.uber.org/zap"
+	"azam-akram/go/utils/logger"
 )
 
-var log *zap.Logger
-
-var jHandler JsonHandler_Interface
-
-type JsonHandler_Interface interface {
-	ConvertGenericInterfaceToMap()
-	ConvertStringToMap(s string) (map[string]interface{}, error)
-	ConvertMapToString(m map[string]interface{}) (string, error)
-	ConvertStringToStruct(s string) (*Employee, error)
-	ConvertStructToString(e *Employee) (string, error)
-	ConvertStringToByte(s string) []byte
-	ConvertByteToString([]byte) (string, error)
-	ConvertByteToStruct(jsonBytes []byte) (*Employee, error)
-	ConvertStructToByte(emp *Employee) (jsonBytes []byte, err error)
-	ModifyInputJson(s string) (map[string]interface{}, error)
-	DisplayAllJsonHandlers()
-}
+var handler Handler
 
 type JsonHandler struct {
+	logger logger.Logger
 }
 
-var employeeStr = string(`{
-    "id": "The ID",
-    "name": "The User",
-    "designation": "CEO",
-    "address":
-    [
-        {
-            "doorNumber": 1,
-            "street": "The office street",
-            "city": "The office city",
-            "country": "The office country"
-        },
-        {
-            "doorNumber": 1,
-            "street": "The home street",
-            "city": "The home city",
-            "country": "The home country"
-        }
-    ]
-}`)
-
-func (jHandler JsonHandler) DisplayAllJsonHandlers() {
-	jHandler.ConvertGenericInterfaceToMap()
-
-	modifiedEmpMap, err := jHandler.ModifyInputJson(employeeStr)
-	if err != nil {
-		logger.GetLogger().Print(err)
+func NewJsonHandler() Handler {
+	if handler == nil {
+		handler = &JsonHandler{
+			logger: logger.GetLogger(),
+		}
 	}
+	return handler
+}
 
-	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ModifyInputJson", "modifiedEmpMap", modifiedEmpMap)
-
-	jMap, err := jHandler.ConvertStringToMap(employeeStr)
-	if err != nil {
-		logger.GetLogger().Print(err)
+func (jh JsonHandler) GetLogger() logger.Logger {
+	if jh.logger == nil {
+		jh.logger = logger.GetLogger()
 	}
-	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStringToMap", "jMap", jMap)
-
-	mapData := map[string]interface{}{
-		"id":   "The ID",
-		"user": "The User",
-	}
-
-	str, err := jHandler.ConvertMapToString(mapData)
-	if err != nil {
-		logger.GetLogger().Print(err)
-	}
-
-	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertMapToString", "str", str)
-
-	emp, err := jHandler.ConvertStringToStruct(employeeStr)
-	if err != nil {
-		logger.GetLogger().Print(err)
-	}
-	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStringToStruct", "emp", emp)
-
-	str, err = jHandler.ConvertStructToString(emp)
-	if err != nil {
-		logger.GetLogger().Print(err)
-	}
-	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStructToString", "str", str)
-
-	jsonBytes := jHandler.ConvertStringToByte(employeeStr)
-	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStringToByte", "jsonBytes", jsonBytes)
-
-	bytesStr := jHandler.ConvertByteToString(jsonBytes)
-	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertByteToString", "bytesStr", bytesStr)
-
-	emp, err = jHandler.ConvertByteToStruct(jsonBytes)
-	if err != nil {
-		logger.GetLogger().Print(err)
-	}
-	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertByteToStruct", "emp", emp)
-
-	jsonBytes, err = jHandler.ConvertStructToByte(emp)
-	if err != nil {
-		logger.GetLogger().Print(err)
-	}
-	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStructToByte", "jsonBytes", jsonBytes)
-
+	return jh.logger
 }
 
 func (jHandler JsonHandler) ConvertGenericInterfaceToMap() {
@@ -137,81 +56,139 @@ func (jHandler JsonHandler) ConvertGenericInterfaceToMap() {
 	}
 }
 
-func (jHandler JsonHandler) ConvertStringToMap(s string) (map[string]interface{}, error) {
-	var emp = make(map[string]interface{})
-	if err := json.Unmarshal([]byte(s), &emp); err != nil {
-		return nil, errors.New("cannot convert string to map")
+func (jh JsonHandler) StringToStruct(s string, i interface{}) error {
+	err := json.Unmarshal([]byte(s), i)
+	if err != nil {
+		return err
 	}
 
-	return emp, nil
+	return nil
 }
 
-func (jHandler JsonHandler) ConvertMapToString(m map[string]interface{}) (string, error) {
+func (jh JsonHandler) StructToString(i interface{}) (string, error) {
+	jsonBytes, err := json.Marshal(i)
+	if err != nil {
+		return "", err
+	}
+
+	return string(jsonBytes), nil
+}
+
+func (jh JsonHandler) StringToMap(s string) (map[string]interface{}, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal([]byte(s), &m)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, nil
+}
+
+func (jh JsonHandler) MapToString(m map[string]interface{}) (string, error) {
 	jsonBytes, err := json.Marshal(m)
 	if err != nil {
-		fmt.Println(err)
+		return "", err
 	}
 
 	return string(jsonBytes), nil
 }
 
-func (jHandler JsonHandler) ConvertStringToStruct(s string) (*Employee, error) {
-	var emp *Employee
-	err := json.Unmarshal([]byte(employeeStr), &emp)
-	if err != nil {
-		return nil, errors.New("cannot convert string to struct")
-	}
-
-	return emp, nil
-}
-
-func (jHandler JsonHandler) ConvertStructToString(e *Employee) (string, error) {
-	var jsonBytes []byte
-
-	jsonBytes, err := json.Marshal(e)
-	if err != nil {
-		return "", errors.New("cannot convert struct to string")
-	}
-
-	return string(jsonBytes), nil
-}
-
-func (jHandler JsonHandler) ConvertStringToByte(s string) []byte {
-	return []byte(s)
-}
-
-func (jHandler JsonHandler) ConvertByteToString(jsonBytes []byte) string {
+func (jh JsonHandler) BytesToString(jsonBytes []byte) string {
 	return string(jsonBytes)
 }
 
-func (jHandler JsonHandler) ConvertByteToStruct(jsonBytes []byte) (emp *Employee, err error) {
-
-	err = json.Unmarshal([]byte(employeeStr), &emp)
-	if err != nil {
-		return nil, errors.New("cannot convert bytes to struct")
-	}
-
-	return emp, nil
+func (jh JsonHandler) StringToBytes(s string) []byte {
+	return []byte(s)
 }
 
-func (jHandler JsonHandler) ConvertStructToByte(emp *Employee) (jsonBytes []byte, err error) {
-
-	jsonBytes, err = json.Marshal(emp)
+func (jh JsonHandler) StructToBytes(i interface{}) (jsonBytes []byte, err error) {
+	jsonBytes, err = json.Marshal(i)
 	if err != nil {
-		return nil, errors.New("cannot convert struct to string")
+		return nil, err
 	}
 
 	return jsonBytes, nil
 }
 
-func (jHandler JsonHandler) ModifyInputJson(s string) (map[string]interface{}, error) {
-	var inputEmpMap = make(map[string]interface{})
-	if err := json.Unmarshal([]byte(s), &inputEmpMap); err != nil {
+func (jh JsonHandler) BytesToStruct(b []byte, d interface{}) error {
+	err := json.Unmarshal([]byte(b), &d)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (jh JsonHandler) ModifyInputJson(s string) (map[string]interface{}, error) {
+	var mapToProcess = make(map[string]interface{})
+	if err := json.Unmarshal([]byte(s), &mapToProcess); err != nil {
 		return nil, errors.New("cannot convert string to map")
 	}
 
-	logger.GetLogger().PrintKeyValue("ModifyInputJson", "inputEmpMap", inputEmpMap)
+	jh.logger.PrintKeyValue("Before modification", "mapToProcess", mapToProcess)
+	mapToProcess["degree"] = "phd"
+	jh.logger.PrintKeyValue("After adding a new key-value", "mapToProcess", mapToProcess)
 
-	inputEmpMap["degree"] = "phd"
-	return inputEmpMap, nil
+	return mapToProcess, nil
+}
+
+func (h JsonHandler) DisplayAllJsonHandlers(str string) {
+	//h.ConvertGenericInterfaceToMap()
+
+	var emp Employee
+	err := h.StringToStruct(str, &emp)
+	if err != nil {
+		logger.GetLogger().Print(err)
+	}
+
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::StringToStruct", "emp", emp)
+
+	str, err = h.StructToString(emp)
+	if err != nil {
+		logger.GetLogger().Print(err)
+	}
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStructToString", "str", str)
+
+	jMap, err := h.StringToMap(str)
+	if err != nil {
+		logger.GetLogger().Print(err)
+	}
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStringToMap", "jMap", jMap)
+
+	mapData := map[string]interface{}{
+		"id":   "The ID",
+		"user": "The User",
+	}
+
+	mapStr, err := h.MapToString(mapData)
+	if err != nil {
+		logger.GetLogger().Print(err)
+	}
+
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertMapToString", "mapStr", mapStr)
+
+	jsonBytes := h.StringToBytes(mapStr)
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStringToByte", "jsonBytes", jsonBytes)
+
+	bytesStr := h.BytesToString(jsonBytes)
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertByteToString", "bytesStr", bytesStr)
+
+	jsonBytes, err = h.StructToBytes(emp)
+	if err != nil {
+		logger.GetLogger().Print(err)
+	}
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertStructToByte", "jsonBytes", jsonBytes)
+
+	err = h.BytesToStruct(jsonBytes, &emp)
+	if err != nil {
+		logger.GetLogger().Print(err)
+	}
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ConvertByteToStruct", "emp", emp)
+
+	modifiedEmpMap, err := h.ModifyInputJson(str)
+	if err != nil {
+		logger.GetLogger().Print(err)
+	}
+
+	logger.GetLogger().PrintKeyValue("DisplayAllJsonHandlers::ModifyInputJson", "modifiedEmpMap", modifiedEmpMap)
 }

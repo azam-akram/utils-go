@@ -13,3 +13,8 @@ type Address struct {
 	City       string `json:"city,omitempty"`
 	Country    string `json:"country,omitempty"`
 }
+
+type EmployeeShort struct {
+	ID   string `json:"id,omitempty"`
+	Name string `json:"name,omitempty"`
+}

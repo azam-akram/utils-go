@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var empStr = string(`{
+var empStr = `{
     "id": "The ID",
     "name": "The User",
     "designation": "CEO",
@@ -15,24 +15,67 @@ var empStr = string(`{
     [
         {
             "doorNumber": 1,
-            "street": "The office street",
-            "city": "The office city",
-            "country": "The office country"
+            "street": "The office street 1",
+            "city": "The office city 1",
+            "country": "The office country 1"
         },
         {
-            "doorNumber": 1,
-            "street": "The home street",
-            "city": "The home city",
-            "country": "The home country"
+            "doorNumber": 2,
+            "street": "The home street 2",
+            "city": "The home city 2",
+            "country": "The home country 2"
         }
     ]
-}`)
+}`
 
-func Test_ConvertStringToMap_Success(t *testing.T) {
+func Test_StringToStruct_Success(t *testing.T) {
 	assertThat := assert.New(t)
 
-	jh := JsonHandler{}
-	jMap, _ := jh.ConvertStringToMap(empStr)
+	jh := NewJsonHandler()
+
+	var emp Employee
+	err := jh.StringToStruct(empStr, &emp)
+	assertThat.Nil(err)
+
+	assertThat.Equal(emp.ID, "The ID")
+	assertThat.Equal(emp.Name, "The User")
+}
+
+func Test_StringToStruct_EmployeeShort_Success(t *testing.T) {
+	assertThat := assert.New(t)
+
+	jh := NewJsonHandler()
+
+	var emp EmployeeShort
+	err := jh.StringToStruct(empStr, &emp)
+	assertThat.Nil(err)
+
+	assertThat.Equal(emp.ID, "The ID")
+	assertThat.Equal(emp.Name, "The User")
+}
+
+func Test_StructToString_Success(t *testing.T) {
+	assertThat := assert.New(t)
+
+	employee := &Employee{
+		ID:   "The ID",
+		Name: "The User",
+	}
+
+	jh := NewJsonHandler()
+	str, err := jh.StructToString(employee)
+	assertThat.Nil(err)
+
+	expectedRes := `{"id":"The ID","name":"The User"}`
+
+	assertThat.Equal(expectedRes, str)
+}
+
+func Test_StringToMap_Success(t *testing.T) {
+	assertThat := assert.New(t)
+
+	jh := NewJsonHandler()
+	jMap, _ := jh.StringToMap(empStr)
 
 	id := jMap["id"].(string)
 	user := jMap["name"].(string)
@@ -41,100 +84,92 @@ func Test_ConvertStringToMap_Success(t *testing.T) {
 	assertThat.Equal(user, "The User")
 }
 
-func Test_ConvertMapToString_Success(t *testing.T) {
+func Test_MapToString_Success(t *testing.T) {
 	assertThat := assert.New(t)
 
-	expectedRes := "{\"id\":\"The ID\",\"user\":\"The User\"}"
+	expectedRes := "{\"id\":\"The ID\",\"name\":\"The User\"}"
 
 	mapData := map[string]interface{}{
 		"id":   "The ID",
-		"user": "The User",
+		"name": "The User",
 	}
 
-	jh := JsonHandler{}
-	jsonStr, _ := jh.ConvertMapToString(mapData)
+	jh := NewJsonHandler()
+	jsonStr, err := jh.MapToString(mapData)
 
+	assertThat.Nil(err)
 	assertThat.Equal(jsonStr, expectedRes)
 }
 
-func Test_ConvertStringToStruct_Success(t *testing.T) {
-	assertThat := assert.New(t)
+func Test_StringToBytes_Success(t *testing.T) {
+	jh := NewJsonHandler()
 
-	jh := JsonHandler{}
-
-	employee, _ := jh.ConvertStringToStruct(empStr)
-
-	assertThat.Equal(employee.ID, "The ID")
-	assertThat.Equal(employee.Name, "The User")
-}
-
-func Test_ConvertStructToString_Success(t *testing.T) {
-	assertThat := assert.New(t)
-
-	employee := &Employee{
-		ID:   "The ID",
-		Name: "The User",
-	}
-
-	jh := JsonHandler{}
-
-	jh.ConvertStructToString(employee)
-
-	assertThat.Equal(employee.ID, "The ID")
-	assertThat.Equal(employee.Name, "The User")
-}
-
-func Test_ConvertStringToByte_Success(t *testing.T) {
-	jh := JsonHandler{}
-
-	jh.ConvertStringToByte(empStr)
+	jh.StringToBytes(empStr)
 
 	assert.NotNil(t, empStr)
 }
 
-func Test_ConvertByteToString_Success(t *testing.T) {
+func Test_BytesToString_Success(t *testing.T) {
 	assertThat := assert.New(t)
-	jh := JsonHandler{}
+	jh := NewJsonHandler()
 
 	inputBytes := []byte(`{"id": "The ID", "name": "The User"}`)
+	outputString := jh.BytesToString(inputBytes)
 
-	outputString := jh.ConvertByteToString(inputBytes)
-	outputBytes := []byte(outputString)
+	actualBytes := []byte(outputString)
 
-	assertThat.Equal(inputBytes, outputBytes)
+	assertThat.Equal(inputBytes, actualBytes)
 }
 
-func Test_ConvertByteToStruct_Success(t *testing.T) {
+func Test_StructToBytes_Success(t *testing.T) {
 	assertThat := assert.New(t)
-	jh := JsonHandler{}
-
-	byteValue, _ := ioutil.ReadFile("testdata/employee.json")
-
-	outputPref, _ := jh.ConvertByteToStruct(byteValue)
-
-	assertThat.Equal(outputPref.ID, "The ID")
-}
-
-func Test_ConvertStructToByte_Success(t *testing.T) {
-	jh := JsonHandler{}
+	jh := NewJsonHandler()
 
 	employee := &Employee{
 		ID:   "The ID",
 		Name: "The User",
 	}
+	actualBytes, err := jh.StructToBytes(employee)
 
-	jsonBytes, _ := jh.ConvertStructToByte(employee)
+	assertThat.Nil(err)
+	assertThat.NotNil(actualBytes)
+}
 
-	assert.NotNil(t, jsonBytes)
+func Test_BytesToStruct_Success(t *testing.T) {
+	assertThat := assert.New(t)
+	jh := NewJsonHandler()
+
+	byteValue, err := ioutil.ReadFile("testdata/employee.json")
+	assertThat.Nil(err)
+
+	var emp *Employee
+	err = jh.BytesToStruct(byteValue, &emp)
+
+	assertThat.Nil(err)
+	assertThat.Equal(emp.ID, "The ID")
 }
 
 func Test_ModifyInputJson_Success(t *testing.T) {
 	assertThat := assert.New(t)
-	jh := JsonHandler{}
+	jh := NewJsonHandler()
 
-	modifiedEmpMap, _ := jh.ModifyInputJson(empStr)
+	modifiedEmpMap, err := jh.ModifyInputJson(empStr)
 
+	assertThat.Nil(err)
 	assert.NotNil(t, modifiedEmpMap)
 	assertThat.Equal(modifiedEmpMap["degree"], "phd")
 	assertThat.Equal(modifiedEmpMap["name"], "The User")
+}
+
+func Test_DisplayAllJsonHandlers_Success(t *testing.T) {
+	assertThat := assert.New(t)
+
+	byteValue, err := ioutil.ReadFile("testdata/employee.json")
+	assertThat.Nil(err)
+
+	jh := NewJsonHandler()
+
+	str := jh.BytesToString(byteValue)
+
+	jh.DisplayAllJsonHandlers(str)
 }
