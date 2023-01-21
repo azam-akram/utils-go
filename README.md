@@ -12,7 +12,7 @@ go test ./...
 
 ### [Json utils](https://github.com/azam-akram/utils-go/tree/main/json_utils):
 
-Details about HTTP json-utils can be found [here](https://medium.com/@akram.muhammadazam/the-most-common-json-utility-functions-in-go-language-f6dcc4284292)
+Details about HTTP json-utils can be found [here](https://solutiontoolkit.com/2023/01/the-common-json-utility-functions-in-go-language/)
 
 ```
 type JsonHandler_Interface interface {
