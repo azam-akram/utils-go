@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+    
+    stages {
+        
+        stage('Vetting') {
+            steps {
+                sh 'go vet ./...'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                sh 'go test ./...'
+            }
+        }
+
+    }
+}
