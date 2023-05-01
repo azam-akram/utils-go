@@ -2,18 +2,16 @@ pipeline {
     agent any
     
     stages {
-        
-        stage('Vetting') {
+        stage('Go Vet') {
             steps {
                 sh 'go vet ./...'
             }
         }
         
-        stage('Test') {
+        stage('Go Test') {
             steps {
                 sh 'go test ./...'
             }
         }
-
     }
 }
