@@ -6,6 +6,12 @@ pipeline {
     }
 
     stages {
+        stage('Go Version') {
+            steps {
+                sh 'go version'
+            }
+        }
+
         stage('Go Vet') {
             steps {
                 sh 'go vet ./...'
@@ -17,5 +23,6 @@ pipeline {
                 sh 'go test ./...'
             }
         }
+
     }
 }
