@@ -5,6 +5,7 @@ pipeline {
         go '1.16.13'
     }
 
+
     stages {
         stage('Go Version') {
             steps {
