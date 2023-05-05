@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     tools {
-        go '1.16.13'
+        go '1.18'
     }
 
 
