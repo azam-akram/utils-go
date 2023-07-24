@@ -1,15 +1,9 @@
 # utils-go
-Common go lang utilitiy code.
 
+![GitHub last commit](https://img.shields.io/github/last-commit/azam-akram/utils-go)
+![GitHub license](https://img.shields.io/github/license/azam-akram/utils-go)
 
-Vet whole project by,
-```
-go vet ./...
-```
-run all tests in [json_handler_test.go](https://github.com/azam-akram/utils-go/blob/main/json_utils/json_handler_test.go) by, 
-```
-go test ./...
-```
+`utils-go` is a collection of utility functions and packages written in Go (Golang) to simplify and enhance common tasks in Go programming. This repository aims to provide reusable code and tools that can be easily integrated into your Go projects, saving you development time and effort.
 
 ### [Json utils](https://github.com/azam-akram/utils-go/tree/main/json_utils):
 
@@ -55,3 +49,11 @@ const (
 
 ### [Customised Logger](https://github.com/azam-akram/utils-go/blob/main/logger/logger.go):
 A customised logger, which can log different data structures like, string, key-value map etc.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute the code in this repository as long as you retain the original license terms. Refer to the [LICENSE](LICENSE) file for more information.
+
+---
+
+Thanks for using `utils-go`! If you have any questions or need further assistance, feel free to contact the project maintainer or open an issue on the repository. Happy coding!
