@@ -33,7 +33,7 @@ jsonHandler.DisplayAllJsonHandlers()
 
 ### [HTTP utils](https://github.com/azam-akram/utils-go/tree/main/http_utils):
 
-Details about HTTP client-server can be found [here]([https://medium.com/@akram.muhammadazam/go-a-retryable-http-client-server-fbcb04dc33e9])
+Details about HTTP client-server can be found [here]([https://solutiontoolkit.com/2023/01/a-retryable-http-client-server-communication-in-go-language/])
 
 A simple HTTP client-server communication but with retry in place. 
 [HTTP Server](https://github.com/azam-akram/utils-go/tree/main/http_utils/server) deliberately returns HTTP 500 (internal server error) for first 3 HTTP request, to "mock" some internal server errors. 
